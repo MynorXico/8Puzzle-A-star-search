@@ -14,7 +14,7 @@ class State(object):
                cost+=1
         return cost
     
-    def GenerateChildren(self, VisitedMatrices, FrontierMatrices, FrontierStates):
+    def GenerateChildren(self, VisitedMatrices, FrontierMatrices, FrontierStates, CostsList):
         # Can Move Up
         if(self.ZeroPosition / 3) != 0:
             tmpMatrix = self.MoveUp()
@@ -22,14 +22,67 @@ class State(object):
                 tmpState = State(tmpMatrix)
                 tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics1())
                 tmpState.Path = self.Path + "U"
+                tmpState.ZeroPosition = self.ZeroPosition - 3
                 if(tmpMatrix in FrontierMatrices):
                     stateIndex = FrontierMatrices.index(tmpMatrix)
                     if(FrontierStates[stateIndex].Cost > tmpState.Cost):
-                        FrontierStates[stateIndex].Cost = tmpState.Cost
+                        FrontierStates[stateIndex] = tmpState
+                        CostsList[stateIndex] = tmpState.Cost
                 else:
                     FrontierMatrices.append(tmpMatrix)
                     FrontierStates.append(tmpState)
-           
+                    CostsList.append(tmpState.Cost)
+        # Can Move Down
+        if(self.ZeroPosition / 3) != 2:
+            tmpMatrix = self.MoveDown()
+            if not (tmpMatrix in VisitedMatrices):
+                tmpState = State(tmpMatrix)
+                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics1())
+                tmpState.Path = self.Path + "D"
+                tmpState.ZeroPosition = self.ZeroPosition + 3
+                if(tmpMatrix in FrontierMatrices):
+                    stateIndex = FrontierMatrices.index(tmpMatrix)
+                    if(FrontierStates[stateIndex].Cost > tmpState.Cost):
+                        FrontierStates[stateIndex] = tmpState
+                        CostsList[stateIndex] = tmpState.Cost
+                else:
+                    FrontierMatrices.append(tmpMatrix)
+                    FrontierStates.append(tmpState)
+                    CostsList.append(tmpState.Cost)
+        # Can Move Left
+        if(self.ZeroPosition % 3) != 0:
+            tmpMatrix = self.MoveLeft()
+            if not (tmpMatrix in VisitedMatrices):
+                tmpState = State(tmpMatrix)
+                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics1())
+                tmpState.Path = self.Path + "L"
+                tmpState.ZeroPosition = self.ZeroPosition - 1
+                if(tmpMatrix in FrontierMatrices):
+                    stateIndex = FrontierMatrices.index(tmpMatrix)
+                    if(FrontierStates[stateIndex].Cost > tmpState.Cost):
+                        FrontierStates[stateIndex] = tmpState
+                        CostsList[stateIndex] = tmpState.Cost
+                else:
+                    FrontierMatrices.append(tmpMatrix)
+                    FrontierStates.append(tmpState)
+                    CostsList[stateIndex] = tmpState.Cost
+        # Can Move Right
+        if(self.ZeroPosition % 3) != 2:
+            tmpMatrix = self.MoveRight()
+            if not (tmpMatrix in VisitedMatrices):
+                tmpState = State(tmpMatrix)
+                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics1())
+                tmpState.Path = self.Path + "R"
+                tmpState.ZeroPosition = self.ZeroPosition + 1
+                if(tmpMatrix in FrontierMatrices):
+                    stateIndex = FrontierMatrices.index(tmpMatrix)
+                    if(FrontierStates[stateIndex].Cost > tmpState.Cost):
+                        FrontierStates[stateIndex] = tmpState
+                        CostsList[stateIndex] = tmpState.Cost
+                else:
+                    FrontierMatrices.append(tmpMatrix)
+                    FrontierStates.append(tmpState)
+                    CostsList.append(tmpState.Cost)
 
 
     def MoveUp(self):

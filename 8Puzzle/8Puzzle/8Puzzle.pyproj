@@ -22,6 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="8Puzzle.py" />
+    <Compile Include="Solver.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="State.py">
       <SubType>Code</SubType>
     </Compile>
