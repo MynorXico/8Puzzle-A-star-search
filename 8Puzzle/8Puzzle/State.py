@@ -1,3 +1,4 @@
+import math
 class State(object):
     """ Machine State """
 
@@ -20,7 +21,7 @@ class State(object):
             tmpMatrix = self.MoveUp()
             if not (tmpMatrix in VisitedMatrices):
                 tmpState = State(tmpMatrix)
-                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics1())
+                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics2())
                 tmpState.Path = self.Path + "U"
                 tmpState.ZeroPosition = self.ZeroPosition - 3
                 if(tmpMatrix in FrontierMatrices):
@@ -37,7 +38,7 @@ class State(object):
             tmpMatrix = self.MoveDown()
             if not (tmpMatrix in VisitedMatrices):
                 tmpState = State(tmpMatrix)
-                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics1())
+                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics2())
                 tmpState.Path = self.Path + "D"
                 tmpState.ZeroPosition = self.ZeroPosition + 3
                 if(tmpMatrix in FrontierMatrices):
@@ -54,7 +55,7 @@ class State(object):
             tmpMatrix = self.MoveLeft()
             if not (tmpMatrix in VisitedMatrices):
                 tmpState = State(tmpMatrix)
-                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics1())
+                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics2())
                 tmpState.Path = self.Path + "L"
                 tmpState.ZeroPosition = self.ZeroPosition - 1
 
@@ -73,7 +74,7 @@ class State(object):
             tmpMatrix = self.MoveRight()
             if not (tmpMatrix in VisitedMatrices):
                 tmpState = State(tmpMatrix)
-                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics1())
+                tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics2())
                 tmpState.Path = self.Path + "R"
                 tmpState.ZeroPosition = self.ZeroPosition + 1
                 if(tmpMatrix in FrontierMatrices):
@@ -131,3 +132,13 @@ class State(object):
         for row in matrix:
             print(row)
         print("")
+
+    def Heuristics2(self):
+            cost = 0
+            for i in range(len(self.CurrentBoard)):
+               CurrentRow = i/3
+               CurrentColumn = i%3
+               RealRow = self.CurrentBoard[i]/3
+               RealColumn  = self.CurrentBoard[i]%3
+               cost += (math.fabs(RealRow-CurrentRow) + math.fabs(RealColumn-CurrentColumn))
+            return cost

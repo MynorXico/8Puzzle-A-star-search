@@ -3,17 +3,19 @@ import State
 import time
 import os
 from threading import Thread
+from timeit import default_timer as timer
+
 import winsound
 Freq = 2500 # Set Frequency To 2500 Hertz
 Dur = 5000 # Set Duration To 1000 ms == 1 second
-
+timer()
 
 clear = lambda: os.system('cls')
 
-Numbers =[4,8,5,6,7,0,3,1,2]
+Numbers =[4,6,1,3,7,2,5,8,0]
 s = Solver.Solver()
 solution = s.Solve(Numbers)
-
+t = timer()
 s = State.State(Numbers)
 s.PrintState()
 for i in solution:
@@ -30,5 +32,6 @@ for i in solution:
     s.PrintState()
  
 print(solution)
+print(t)
 winsound.Beep(Freq,Dur)
 
