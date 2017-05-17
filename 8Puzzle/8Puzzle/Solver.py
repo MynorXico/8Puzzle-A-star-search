@@ -24,20 +24,16 @@ class Solver(object):
         self.FrontierMatrices.append(InitialState.CurrentBoard)
         self.CostsList.append(InitialState.Cost)
         
-        print (timer())
         while(len(self.FrontierStates) != 0):
-            if(len(self.VisitedMatrices)%10000 == 0):
-                print (len(self.VisitedMatrices))
-                print (timer())
             StateIndex = self.CostsList.index(min(self.CostsList))
+
             self.tmpState = self.FrontierStates.pop(StateIndex)
             self.CostsList.pop(StateIndex)
             self.FrontierMatrices.pop(StateIndex)
+
             self.VisitedMatrices.append(self.tmpState.CurrentBoard)
             if GoalState.CurrentBoard == self.tmpState.CurrentBoard:
-                print (self.tmpState.Path())
-                print(str(timer()) + " (" + str(len(self.VisitedMatrices)) + " )")
-                return True
+                return self.tmpState.Path
             
             self.tmpState.GenerateChildren(self.VisitedMatrices, self.FrontierMatrices, self.FrontierStates, self.CostsList)
         print("False")

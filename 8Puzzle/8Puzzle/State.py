@@ -9,14 +9,14 @@ class State(object):
 
     def Heuristics1(self):
         cost = 0
-        for i in len(self.CurrentBoard):
+        for i in range(len(self.CurrentBoard)):
            if(i != self.CurrentBoard[i]):
                cost+=1
         return cost
     
     def GenerateChildren(self, VisitedMatrices, FrontierMatrices, FrontierStates, CostsList):
         # Can Move Up
-        if(self.ZeroPosition / 3) != 0:
+        if(int(self.ZeroPosition / 3)) != 0:
             tmpMatrix = self.MoveUp()
             if not (tmpMatrix in VisitedMatrices):
                 tmpState = State(tmpMatrix)
@@ -33,7 +33,7 @@ class State(object):
                     FrontierStates.append(tmpState)
                     CostsList.append(tmpState.Cost)
         # Can Move Down
-        if(self.ZeroPosition / 3) != 2:
+        if(int(self.ZeroPosition / 3)) != 2:
             tmpMatrix = self.MoveDown()
             if not (tmpMatrix in VisitedMatrices):
                 tmpState = State(tmpMatrix)
@@ -50,24 +50,26 @@ class State(object):
                     FrontierStates.append(tmpState)
                     CostsList.append(tmpState.Cost)
         # Can Move Left
-        if(self.ZeroPosition % 3) != 0:
+        if(int(self.ZeroPosition % 3)) != 0:
             tmpMatrix = self.MoveLeft()
             if not (tmpMatrix in VisitedMatrices):
                 tmpState = State(tmpMatrix)
                 tmpState.Cost = (self.Cost + 1 + tmpState.Heuristics1())
                 tmpState.Path = self.Path + "L"
                 tmpState.ZeroPosition = self.ZeroPosition - 1
+
                 if(tmpMatrix in FrontierMatrices):
                     stateIndex = FrontierMatrices.index(tmpMatrix)
+
                     if(FrontierStates[stateIndex].Cost > tmpState.Cost):
                         FrontierStates[stateIndex] = tmpState
                         CostsList[stateIndex] = tmpState.Cost
                 else:
                     FrontierMatrices.append(tmpMatrix)
                     FrontierStates.append(tmpState)
-                    CostsList[stateIndex] = tmpState.Cost
+                    CostsList.append(tmpState.Cost)
         # Can Move Right
-        if(self.ZeroPosition % 3) != 2:
+        if(int(self.ZeroPosition % 3)) != 2:
             tmpMatrix = self.MoveRight()
             if not (tmpMatrix in VisitedMatrices):
                 tmpState = State(tmpMatrix)
@@ -111,4 +113,21 @@ class State(object):
         tmp = tmpMatrix[self.ZeroPosition]
         tmpMatrix[self.ZeroPosition] = tmpMatrix[self.ZeroPosition-1]
         tmpMatrix[self.ZeroPosition-1] = tmp;
-        return tmpMatrix
+        return tmpMatrix    
+
+    def PrintState(self):
+        matrix = []
+        list = []
+        for i in range(len(self.CurrentBoard)):
+            if(i%3 == 0):
+                list = []
+            if(self.CurrentBoard[i] == 0):
+                list.append("*")
+            else:
+                list.append(str(self.CurrentBoard[i]))
+            if(i % 3 == 0):
+                matrix.append(list)
+    
+        for row in matrix:
+            print(row)
+        print("")
